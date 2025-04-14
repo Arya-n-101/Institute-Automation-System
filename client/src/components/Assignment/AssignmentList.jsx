@@ -1,4 +1,5 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, replace } from "react-router-dom";
+import axios from 'axios';
 import { useContext, useEffect, useState } from "react";
 import { FaClipboardList, FaCalendarAlt, FaEdit, FaTrash, FaPlus, FaEye } from "react-icons/fa";
 import { RoleContext } from "../../context/Rolecontext";
@@ -23,6 +24,7 @@ export default function AssignmentList() {
 
         if (res.ok) {
           setAssignments(data.assignments || []);
+          // console.log("Assignments:", data.assignments);
         } else {
           alert("Failed to fetch assignments.");
         }
@@ -33,8 +35,9 @@ export default function AssignmentList() {
     };
 
     fetchAssignments();
+   
   }, [courseId]);
-
+  console.log("Assignments:",assignments);
   // Fetch course details
   useEffect(() => {
     const fetchCourse = async () => {
@@ -58,22 +61,31 @@ export default function AssignmentList() {
   const handleDelete = async (assignmentId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this assignment?");
     if (!confirmDelete) return;
-
+  
     try {
-      const response = await fetch(`http://localhost:8000/api/${role}/${userId}/assignment/${assignmentId}`, {
+      console.log("Deleting assignment...", { courseId, assignmentId });
+  
+      const res = await fetch(`http://localhost:8000/api/assignment/${courseId}/${assignmentId}`, {
         method: "DELETE",
       });
-
-      if (response.ok) {
-        setAssignments((prev) => prev.filter((a) => a._id !== assignmentId));
+  
+      console.log("Response from server:", res);
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        alert("Assignment deleted successfully!");
+        window.location.href = `/course/${courseId}/assignments`;
+        // navigate(`/course/${courseId}/assignments`,{replace:true});
       } else {
-        alert("Failed to delete assignment.");
+        alert(data.message || "Failed to delete assignment.");
       }
     } catch (err) {
       console.error("Error deleting assignment:", err);
-      alert("Server error.");
+      alert("Server error. Please try again.");
     }
   };
+  
 
   const handleViewAssignment = (assignmentId) => {
     if (role === "faculty") {
@@ -151,13 +163,13 @@ export default function AssignmentList() {
               {role === "faculty" && (
                 <div className="flex gap-4 mt-3">
                   <Link
-                    to={`/course/${courseId}/assignment/${assignment._id}/edit`}
+                    to={`/course/${courseId}/assignment/${assignment.assignmentNumber}/edit`}
                     className="flex-1 text-center bg-yellow-500 text-white py-2 px-4 rounded-md font-medium hover:bg-yellow-600 transition duration-300"
                   >
                     <FaEdit className="inline-block mr-2" /> Edit
                   </Link>
                   <button
-                    onClick={() => handleDelete(assignment._id)}
+                    onClick={() => handleDelete(assignment.assignmentNumber)}
                     className="flex-1 text-center bg-red-500 text-white py-2 px-4 rounded-md font-medium hover:bg-red-600 transition duration-300"
                   >
                     <FaTrash className="inline-block mr-2" /> Delete

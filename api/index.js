@@ -10,7 +10,7 @@ import studentRoute from "../api/routes/student.route.js";
 import facultyRoute from "../api/routes/faculty.route.js";
 import assignmentRoute from "../api/routes/assignment.route.js";
 import courseRoute from "../api/routes/course.route.js";
-
+// import deleteRoute from "../api/routes/delete.route.js"; // Import the delete route
 import Razorpay from "razorpay";
 import crypto from "crypto"; // Needed for signature verification (production)
 
@@ -31,6 +31,7 @@ app.use("/api/student",studentRoute);
 app.use("/api/faculty",facultyRoute);
 app.use("/api/assignment",assignmentRoute);
 app.use("/api/course",courseRoute);
+
 
 
 
