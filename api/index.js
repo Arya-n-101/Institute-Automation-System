@@ -7,6 +7,9 @@ import mongoose from "mongoose";
 import authRoute from "../api/routes/auth.route.js";
 import hostelRoute from "../api/routes/hostel.route.js";
 import studentRoute from "../api/routes/student.route.js";
+import facultyRoute from "../api/routes/faculty.route.js";
+import assignmentRoute from "../api/routes/assignment.route.js";
+import courseRoute from "../api/routes/course.route.js";
 
 import Razorpay from "razorpay";
 import crypto from "crypto"; // Needed for signature verification (production)
@@ -21,9 +24,16 @@ dotenv.config(); // Load environment variables first
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
 app.use("/api/auth",authRoute);
 app.use("/api/hostel",hostelRoute);
 app.use("/api/student",studentRoute);
+app.use("/api/faculty",facultyRoute);
+app.use("/api/assignment",assignmentRoute);
+app.use("/api/course",courseRoute);
+
+
+
 
 const port = process.env.PORT || 8000;
 

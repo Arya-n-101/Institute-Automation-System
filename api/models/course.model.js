@@ -8,7 +8,8 @@ const courseSchema = new mongoose.Schema({
     slot: { type: String },
     credits: { type: Number, required: true, default: 6 },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    numberOfAssignments: { type: Number, default: 0 }
 });
 
 // Student Courses Model
@@ -25,7 +26,7 @@ const studentCourseSchema = new mongoose.Schema({
 
 // Faculty Courses Model
 export const facultyCourseSchema = new mongoose.Schema({
-    facultyId: { type: String, required: true, ref: 'Faculty' },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     courseCode: { type: String, required: true, ref: 'Course' },
     year: { type: Number, required: true },
     session: { type: String, enum: ['Winter Semester', 'Spring Semester', 'Summer Course'], required: true },

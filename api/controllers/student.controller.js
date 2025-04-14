@@ -1,6 +1,7 @@
 import { Student } from '../models/student.model.js';
 import { ApplicationDocument, Bonafide } from '../models/documents.models.js';
-
+import { StudentCourse } from '../models/course.model.js'; // Assuming studentCourse model exists
+import { Assignment } from '../models/assignment.model.js'; // Assuming Assignment model exists
 // Get basic student info
 export const getStudent = async (req, res) => {
     const studentId = req.params.id;
@@ -129,5 +130,44 @@ export const getBonafideApplications = async (req, res) => {
     } catch (error) {
         console.error('Error fetching bonafide applications:', error);
         res.status(500).json({ message: 'Error fetching applications' });
+    }
+};
+
+
+// Get student's courses
+export const getStudentCourses = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const student = await Student.findOne({ userId: id });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Get all courses the student is enrolled in
+        const courses = await StudentCourse.find({ rollNo: student.rollNo });
+        return res.status(200).json({ courses });
+    } catch (err) {
+        console.error("Error fetching student courses:", err);
+        return res.status(500).json({ message: "Error fetching student courses", error: err });
+    }
+};
+
+// Get student's assignments
+export const getStudentAssignments = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const student = await Student.findOne({ userId: id });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Get all assignments for this student
+        const assignments = await Assignment.find({ studentId: student._id });
+        return res.status(200).json({ assignments });
+    } catch (err) {
+        console.error("Error fetching student assignments:", err);
+        return res.status(500).json({ message: "Error fetching student assignments", error: err });
     }
 };

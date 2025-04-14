@@ -153,7 +153,7 @@ function App() {
                     element: <AssignmentLanding/>
                 },
                 {
-                    path:"/course/:courseId/assignment/",
+                    path:"/course/:courseId/assignments/",
                     element: <AssignmentList/>
                 },
                 {
