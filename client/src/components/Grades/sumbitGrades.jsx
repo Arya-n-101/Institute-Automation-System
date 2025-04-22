@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { RoleContext } from "../../context/Rolecontext";
+import { RoleContext } from "../../context/Rolecontext.jsx";
 import * as XLSX from 'xlsx';
 
 const SubmitGrades = () => {
@@ -28,7 +28,7 @@ const SubmitGrades = () => {
         const fetchStudents = async () => { 
             try {
             setLoading(true);
-            const response = await fetch(`https://ias-server-cpoh.onrender.com/api/grades/${courseID}/getStudents`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/grades/${courseID}/getStudents`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch students');
@@ -177,7 +177,7 @@ const handleFileUpload = (event) => {
       setSubmitError(null);
       
       // Replace with your actual API endpoint
-      const response = await fetch(`https://ias-server-cpoh.onrender.com/api/grades/${courseID}/submitGrades`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/grades/${courseID}/submitGrades`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -74,7 +74,7 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
     const deleteMutation = useMutation({
         mutationFn: async () => {
 
-            const res = await fetch("https://ias-server-cpoh.onrender.com/api/complaints/delete", {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/complaints/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
     const markAsDoneMutation = useMutation({
         mutationFn: async () => {
 
-            const res = await fetch("https://ias-server-cpoh.onrender.com/api/complaints/admin/updateStatus", {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/complaints/admin/updateStatus`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -133,7 +133,7 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
             };
 
             
-            const res = await fetch("https://ias-server-cpoh.onrender.com/api/complaints/admin/assign", {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/complaints/admin/assign`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -405,7 +405,7 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500">Address</p>
-                                    <p className="font-medium">Room {complaint.address} Hostel</p>
+                                    <p className="font-medium">{complaint.address}</p>
                                 </div>
                                 {complaint.timeAvailability && (
                                     <div>
@@ -479,8 +479,8 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
                         <div className="mb-3 bg-gray-100 rounded-lg overflow-hidden flex justify-center">
                             <img
 
-                                src={`https://ias-server-cpoh.onrender.com/uploads/complaints/${complaint.imageUrls[activeImageIndex]}`}
-                                alt={`Complaint Image ${activeImageIndex + 1}`}
+                                src={complaint.imageUrls[activeImageIndex]}
+                                alt={`Complaint ${activeImageIndex + 1}`}
                                 className="max-h-80 object-contain"
                             />
                         </div>
@@ -496,7 +496,7 @@ const ComplaintDetails = ({ complaint, onBack, role }) => {
                                     >
                                         <img
 
-                                            src={`https://ias-server-cpoh.onrender.com/uploads/complaints/${url}`}
+                                            src={url}
                                             alt={`Thumbnail ${index + 1}`}
                                             className="h-16 w-16 object-cover"
                                         />
